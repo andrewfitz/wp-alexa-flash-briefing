@@ -1,2 +1,5 @@
+2018-09-18 - v1.2
+-added transient cache for API feed with category support
+
 2018-09-17 - v1.1
 -Initial release
