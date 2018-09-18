@@ -1,4 +1,7 @@
-2018-09-18 - v1.2
+2018-09-18 - v1.3
+-removed custom taxonomy, used standard wordpress categories instead for compatability
+
+2018-09-17 - v1.2
 -added transient cache for API feed with category support
 
 2018-09-17 - v1.1
