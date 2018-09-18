@@ -8,6 +8,12 @@ Create your briefings like regular posts. Here's how it works to determine a tex
 
 It is safest to just put a HTTPS url to your audio file, but you may add other text in the post if you are also sending people to your site to listen. Wordpress will oembed the MP3 file you post, so users will be able to listen on the web.
 
-Use this URL for your Alexa skill:
+Use this URL for your Alexa skill: https://your-domain.com/wp-json/alexa-fb/v1/briefings/
 
-https://your-domain.com/wp-json/alexa-fb/v1/briefings/
+That will post the latest 5 (Amazon's limit) briefings.
+
+If you want to create multiple feeds, use the briefing categories.
+
+Just add the category param to the end point: https://your-domain.com/wp-json/alexa-fb/v1/briefings/?category=myflashcategory
+
+You can also draft and schedule briefings like regular posts.
