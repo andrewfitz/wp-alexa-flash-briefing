@@ -5,7 +5,7 @@
 * Plugin Name: Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/alexa-fb
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.1
+* Version: 1.2
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
 * License: GPL-2.0+
@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ALEXA_FB_VERSION', '1.1' );
+define( 'ALEXA_FB_VERSION', '1.2' );
 
 
 //Register Custom Taxonomy
@@ -131,58 +131,63 @@ function init_api1( $data ) {
 	$prm = $data->get_params();
 	$b_cat = $prm['category'];
 
-	$argss = array(
-		'no_found_rows' => true,
-		'post_status' => 'publish',
-		'numberposts' => 5,
-		'post_type'   => 'briefing'
-	);
+	// Check for transient. If none, then execute WP_Query
+	if ( false === ( $gg = get_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat) ) ) ) {
 
-	if ( ! empty( $b_cat ) ) {
-		$argss['tax_query'] = array(
-			array(
-				'taxonomy' => 'briefing_category',
-				'field' => 'term_id',
-				'terms' => $b_cat,
-			),
-		);
-	}
-
-	$posts = get_posts( $argss );
-
-	if ( empty( $posts ) ) {
-		return null;
-	}
-
-	$gg = [];
-
-	foreach($posts as $post){
-		$response = array(
-			'uid' => 'urn:uuid:' . wp_generate_uuid4( get_permalink( $post ) ),
-			'updateDate' => get_post_modified_time( 'Y-m-d\TH:i:s.\0\Z', true, $post ),
-			'titleText' => $post->post_title,
-			'mainText' => '',
-			'redirectionUrl' => get_permalink( $post ),
+		$argss = array(
+			'no_found_rows' => true,
+			'post_status' => 'publish',
+			'numberposts' => 5,
+			'post_type'   => 'briefing'
 		);
 
-		$cntnt = $post->post_content;
-
-		preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $cntnt , $match);
-
-		if(empty($match[0])){
-			$response['mainText'] = wp_strip_all_tags( strip_shortcodes($post->post_content));
-		} else {
-			$response['streamUrl'] = esc_url_raw($match[0][0]);
+		if ( ! empty( $b_cat ) ) {
+			$argss['tax_query'] = array(
+				array(
+					'taxonomy' => 'briefing_category',
+					'field' => 'term_id',
+					'terms' => $b_cat,
+				),
+			);
 		}
 
-		array_push($gg, $response);
-	};
+		$posts = get_posts( $argss );
 
-	// if only one briefing, do not put out a multi item array
-	if ( count( $gg ) === 1 ) {
-		$gg = $gg[0];
+		if ( empty( $posts ) ) {
+			return null;
+		}
+
+		$gg = [];
+
+		foreach($posts as $post){
+			$response = array(
+				'uid' => 'urn:uuid:' . wp_generate_uuid4( get_permalink( $post ) ),
+				'updateDate' => get_post_modified_time( 'Y-m-d\TH:i:s.\0\Z', true, $post ),
+				'titleText' => $post->post_title,
+				'mainText' => '',
+				'redirectionUrl' => get_permalink( $post ),
+			);
+
+			$cntnt = $post->post_content;
+
+			preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $cntnt , $match);
+
+			if(empty($match[0])){
+				$response['mainText'] = wp_strip_all_tags( strip_shortcodes($post->post_content));
+			} else {
+				$response['streamUrl'] = esc_url_raw($match[0][0]);
+			}
+
+			array_push($gg, $response);
+		};
+
+		// if only one briefing, do not put out a multi item array
+		if ( count( $gg ) === 1 ) {
+			$gg = $gg[0];
+		}
+		// Put the results in a transient. Expire after 12 hours.
+		set_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat), $gg, 1 * HOUR_IN_SECONDS );
 	}
-
 	return $gg;
 }
 
