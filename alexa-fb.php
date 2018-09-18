@@ -5,7 +5,7 @@
 * Plugin Name: Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/alexa-fb
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.2
+* Version: 1.3
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
 * License: GPL-2.0+
@@ -19,37 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ALEXA_FB_VERSION', '1.2' );
-
-
-//Register Custom Taxonomy
-function custom_taxonomyb() {
-
-	$labels = array(
-		'name'                       => _x( 'Categories', 'Taxonomy General Name', 'alexa-fb' ),
-		'singular_name'              => _x( 'Category', 'Taxonomy Singular Name', 'alexa-fb' )
-	);
-	$rewrite = array(
-		'slug'                       => 'briefing_category',
-		'with_front'                 => true,
-		'hierarchical'               => true,
-	);
-	$args = array(
-		'labels'                     => $labels,
-		'hierarchical'               => true,
-		'public'                     => true,
-		'show_ui'                    => true,
-		'show_admin_column'          => true,
-		'show_in_nav_menus'          => true,
-		'show_tagcloud'              => false,
-		'rewrite'                    => $rewrite,
-		'show_in_rest'               => true,
-	);
-	register_taxonomy( 'briefing_category', array( 'briefing' ), $args );
-
-}
-
-add_action( 'init', 'custom_taxonomyb', 0 );
+define( 'ALEXA_FB_VERSION', '1.3' );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -94,7 +64,7 @@ function briefing_post_type() {
 		'description'           => __( 'Alexa flash briefing', 'alexa-fb' ),
 		'labels'                => $labels,
 		'supports'              => array( 'title', 'editor', 'comments' ),
-		'taxonomies'            => array( 'briefing_category'),
+		'taxonomies'            => array( 'category'),
 		'hierarchical'          => true,
 		'public'                => true,
 		'show_ui'               => true,
@@ -144,7 +114,7 @@ function init_api1( $data ) {
 		if ( ! empty( $b_cat ) ) {
 			$argss['tax_query'] = array(
 				array(
-					'taxonomy' => 'briefing_category',
+					'taxonomy' => 'category',
 					'field' => 'term_id',
 					'terms' => $b_cat,
 				),
