@@ -12,7 +12,7 @@ Use this URL for your Alexa skill: https://your-domain.com/wp-json/alexa-fb/v1/b
 
 That will post the latest 5 (Amazon's limit) briefings.
 
-If you want to create multiple feeds, use the briefing categories.
+If you want to create multiple feeds, use categories.
 
 Just add the category param to the end point: https://your-domain.com/wp-json/alexa-fb/v1/briefings/?category=myflashcategory
 
