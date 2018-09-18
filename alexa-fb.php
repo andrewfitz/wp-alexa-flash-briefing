@@ -14,9 +14,16 @@
 
 */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+define( 'ALEXA_FB_VERSION', '1.1' );
+
 
 //Register Custom Taxonomy
-function custom_taxonomy() {
+function custom_taxonomyb() {
 
 	$labels = array(
 		'name'                       => _x( 'Categories', 'Taxonomy General Name', 'alexa-fb' ),
@@ -25,7 +32,7 @@ function custom_taxonomy() {
 	$rewrite = array(
 		'slug'                       => 'briefing_category',
 		'with_front'                 => true,
-		'hierarchical'               => false,
+		'hierarchical'               => true,
 	);
 	$args = array(
 		'labels'                     => $labels,
@@ -34,7 +41,7 @@ function custom_taxonomy() {
 		'show_ui'                    => true,
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
-		'show_tagcloud'              => true,
+		'show_tagcloud'              => false,
 		'rewrite'                    => $rewrite,
 		'show_in_rest'               => true,
 	);
@@ -42,7 +49,7 @@ function custom_taxonomy() {
 
 }
 
-add_action( 'init', 'custom_taxonomy', 0 );
+add_action( 'init', 'custom_taxonomyb', 0 );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -86,9 +93,9 @@ function briefing_post_type() {
 		'label'                 => __( 'Briefing', 'alexa-fb' ),
 		'description'           => __( 'Alexa flash briefing', 'alexa-fb' ),
 		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'comments', 'custom-fields' ),
+		'supports'              => array( 'title', 'editor', 'comments' ),
 		'taxonomies'            => array( 'briefing_category'),
-		'hierarchical'          => false,
+		'hierarchical'          => true,
 		'public'                => true,
 		'show_ui'               => true,
 		'show_in_menu'          => true,
@@ -108,7 +115,16 @@ function briefing_post_type() {
 	register_post_type( 'briefing', $args );
 }
 
+
 add_action( 'init', 'briefing_post_type', 0 );
+
+register_activation_hook( __FILE__, 'active_hook' );
+
+function active_hook() {
+  
+    flush_rewrite_rules();
+}
+
 
 //get the briefing posts and format for JSON and Amazon feed for API 
 function init_api1( $data ) {
