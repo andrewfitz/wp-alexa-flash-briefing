@@ -1,17 +1,21 @@
 <?php
 
 /*
+
 * Plugin Name: Alexa Flash Briefing
+* Plugin URI: https://github.com/andrewfitz/alexa-fb
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 0.1
+* Version: 1.1
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
+* License: GPL-2.0+
+* License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 * Text Domain: alexa-fb
 
 */
 
 
-// Register Custom Taxonomy
+//Register Custom Taxonomy
 function custom_taxonomy() {
 
 	$labels = array(
@@ -37,8 +41,8 @@ function custom_taxonomy() {
 	register_taxonomy( 'briefing_category', array( 'briefing' ), $args );
 
 }
-add_action( 'init', 'custom_taxonomy', 0 );
 
+add_action( 'init', 'custom_taxonomy', 0 );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -102,20 +106,32 @@ function briefing_post_type() {
 		'rest_base'             => 'briefing',
 	);
 	register_post_type( 'briefing', $args );
-
 }
+
 add_action( 'init', 'briefing_post_type', 0 );
-
-
 
 //get the briefing posts and format for JSON and Amazon feed for API 
 function init_api1( $data ) {
+	$prm = $data->get_params();
+	$b_cat = $prm['category'];
+
 	$argss = array(
 		'no_found_rows' => true,
 		'post_status' => 'publish',
 		'numberposts' => 5,
 		'post_type'   => 'briefing'
 	);
+
+	if ( ! empty( $b_cat ) ) {
+		$argss['tax_query'] = array(
+			array(
+				'taxonomy' => 'briefing_category',
+				'field' => 'term_id',
+				'terms' => $b_cat,
+			),
+		);
+	}
+
 	$posts = get_posts( $argss );
 
 	if ( empty( $posts ) ) {
@@ -137,7 +153,7 @@ function init_api1( $data ) {
 
 		preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $cntnt , $match);
 
-		if(empty($match)){
+		if(empty($match[0])){
 			$response['mainText'] = wp_strip_all_tags( strip_shortcodes($post->post_content));
 		} else {
 			$response['streamUrl'] = esc_url_raw($match[0][0]);
@@ -154,13 +170,13 @@ function init_api1( $data ) {
 	return $gg;
 }
 
-
+//register api
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'alexa-fb/v1', '/briefings/', array(
 	'methods' => 'GET',
 	'callback' => 'init_api1',
 	));
-
+	
 } );
 
 
