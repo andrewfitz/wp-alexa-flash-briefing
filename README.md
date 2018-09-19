@@ -17,3 +17,5 @@ If you want to create multiple feeds, use categories.
 Just add the category param to the end point: https://your-domain.com/wp-json/alexa-fb/v1/briefings/?category=myflashcategory
 
 You can also draft and schedule briefings like regular posts.
+
+You can use the excerpt and featured image options if you will be sharing your briefing on social media without interfearing with Alexa.

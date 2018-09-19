@@ -5,7 +5,7 @@
 * Plugin Name: Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/alexa-fb
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.3
+* Version: 1.3.3
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
 * License: GPL-2.0+
@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ALEXA_FB_VERSION', '1.3' );
+define( 'ALEXA_FB_VERSION', '1.3.3' );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -40,7 +40,7 @@ function briefing_post_type() {
 		'update_item'           => __( 'Update Briefing', 'alexa-fb' ),
 		'view_item'             => __( 'View Briefing', 'alexa-fb' ),
 		'view_items'            => __( 'View Briefings', 'alexa-fb' ),
-		'search_items'          => __( 'Search Briefing', 'alexa-fb' ),
+		'search_items'          => __( 'Search Briefings', 'alexa-fb' ),
 		'not_found'             => __( 'Not found', 'alexa-fb' ),
 		'not_found_in_trash'    => __( 'Not found in Trash', 'alexa-fb' ),
 		'featured_image'        => __( 'Featured Image', 'alexa-fb' ),
@@ -63,7 +63,7 @@ function briefing_post_type() {
 		'label'                 => __( 'Briefing', 'alexa-fb' ),
 		'description'           => __( 'Alexa flash briefing', 'alexa-fb' ),
 		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'comments' ),
+		'supports'              => array( 'title', 'editor', 'comments', 'thumbnail', 'excerpt' ),
 		'taxonomies'            => array( 'category'),
 		'hierarchical'          => true,
 		'public'                => true,

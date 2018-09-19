@@ -1,4 +1,8 @@
-2018-09-18 - v1.3
+
+2018-09-18 - v1.3.3
+-added featured image capability
+-added excerpt capability
+-spelling
 -removed custom taxonomy, used standard wordpress categories instead for compatability
 
 2018-09-17 - v1.2
