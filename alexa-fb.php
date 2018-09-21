@@ -5,9 +5,13 @@
 * Plugin Name: Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/alexa-fb
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.3.3
+* Version: 1.4
+* Tested up to: 4.9.8
+* Requires at least: 4.7
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
+* Donate link: https://www.paypal.me/andrewfitz
+* Contributors: andrewfitz
 * License: GPL-2.0+
 * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 * Text Domain: alexa-fb
@@ -19,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ALEXA_FB_VERSION', '1.3.3' );
+define( 'ALEXA_FB_VERSION', '1.4' );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -98,16 +102,18 @@ function active_hook() {
 
 //get the briefing posts and format for JSON and Amazon feed for API 
 function init_api1( $data ) {
+	//GET variables
 	$prm = $data->get_params();
 	$b_cat = $prm['category'];
+	$numc = $prm['limit'];
 
 	// Check for transient. If none, then execute WP_Query
-	if ( false === ( $gg = get_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat) ) ) ) {
+	if ( false === ( $gg = get_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat) . (empty($numc) ? 1 : $numc) ) ) ) {
 
 		$argss = array(
 			'no_found_rows' => true,
 			'post_status' => 'publish',
-			'numberposts' => 5,
+			'numberposts' => (empty($numc) ? 1 : $numc),
 			'post_type'   => 'briefing'
 		);
 

@@ -1,3 +1,6 @@
+2018-09-21 - v1.4
+-changed feed output limit default from 5->1
+-added limit API endpoint param to change feed item amount
 
 2018-09-18 - v1.3.3
 -added featured image capability
