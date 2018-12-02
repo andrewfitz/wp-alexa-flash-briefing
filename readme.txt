@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/andrewfitz
 Requires at least: 4.7
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: trunk
+Stable tag: 1.5
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
