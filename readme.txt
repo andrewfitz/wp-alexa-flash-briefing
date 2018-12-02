@@ -42,6 +42,9 @@ Just add the category param to the end point: `/wp-json/alexa-fb/v1/briefings/?c
 
 (This plugin is not associated with Amazon in any way.)
 
+== Screenshots ==
+1. Make briefings just like posts
+
 == Changelog ==
 2018-12-2 - v1.5
 -added banners and assets for wp.org
