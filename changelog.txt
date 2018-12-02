@@ -1,3 +1,6 @@
+2018-12-2 - v1.5
+-added banners and assets for wp.org
+
 2018-09-21 - v1.4
 -changed feed output limit default from 5->1
 -added limit API endpoint param to change feed item amount
