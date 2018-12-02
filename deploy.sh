@@ -63,7 +63,7 @@ echo "Moving assets-wp-repo"
 rm -rf $SVNPATH/assets/
 mkdir $SVNPATH/assets/
 mv $SVNPATH/trunk/assets-wp-repo/* $SVNPATH/assets/
-svn add $SVNPATH/assets/
+svn add --force $SVNPATH/assets/
 svn delete $SVNPATH/trunk/assets-wp-repo
 
 echo "Changing directory to SVN"
