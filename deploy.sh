@@ -12,7 +12,7 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
-SVNURL="http://plugins.svn.wordpress.org/wp-alexa-flash-briefing/" # Remote SVN repo on wordpress.org, with trailing slash
+SVNURL="http://plugins.svn.wordpress.org/wp-alexa-flash-briefing" # Remote SVN repo on wordpress.org, with no trailing slash
 SVNUSER="andrewfitz" # your svn username
 
 
@@ -60,6 +60,7 @@ README.md
 .gitignore" "$SVNPATH/trunk/"
 
 echo "Moving assets-wp-repo"
+rm -rf $SVNPATH/assets/
 mkdir $SVNPATH/assets/
 mv $SVNPATH/trunk/assets-wp-repo/* $SVNPATH/assets/
 svn add $SVNPATH/assets/
