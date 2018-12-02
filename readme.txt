@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/andrewfitz
 Requires at least: 4.7
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 1.5.1
+Stable tag: 1.5.3
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -33,10 +33,11 @@ That will post the latest briefing from all categories (1). To change the limit 
 
 `/wp-json/alexa-fb/v1/briefings/?limit=5`
 
-
 If you want to create multiple feeds, use categories. Just add the category param to the end point:
 
 `/wp-json/alexa-fb/v1/briefings/?category=myflashbriefcat`
+
+This lets you use the same install for many feeds!
 
 ## Notes
 
