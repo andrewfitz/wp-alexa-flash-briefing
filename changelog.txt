@@ -1,3 +1,8 @@
+2019-03-13 - v1.6
+-added 'cache' param, 0 disables
+-fixed transient for limit queries
+-fixed categories using id instead of slug
+
 2018-12-2 - v1.5
 -added banners and assets for wp.org
 

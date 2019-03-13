@@ -39,6 +39,14 @@ If you want to create multiple feeds, use categories. Just add the category para
 
 This lets you use the same install for many feeds!
 
+The feed API will cache in transients the result per category per limit for a default of 1 hour. To change the cache time or turn off caching per feed, use the cache param. 0 turns off caching for that feed, 1 for 1 hour (default), 3 for 3 hours, 0.5 for 30 mins, etc.
+
+Just add the cache param to the end point:
+
+`/wp-json/alexa-fb/v1/briefings/?cache=0`
+
+All params can be used together.
+
 ## Notes
 
 * You MUST use a secure domain and secure links to your audio files (https for the audio files and the feed URL).

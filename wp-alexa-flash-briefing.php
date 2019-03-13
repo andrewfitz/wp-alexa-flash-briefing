@@ -5,8 +5,8 @@
 * Plugin Name: WP Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/wp-alexa-flash-briefing
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.5.3
-* Tested up to: 4.9.8
+* Version: 1.6
+* Tested up to: 5.1
 * Requires at least: 4.7
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ALEXA_FB_VERSION', '1.5.1' );
+define( 'ALEXA_FB_VERSION', '1.6.0' );
 
 // Register Custom Post Type
 function briefing_post_type() {
@@ -106,9 +106,13 @@ function init_api1( $data ) {
 	$prm = $data->get_params();
 	$b_cat = $prm['category'];
 	$numc = $prm['limit'];
+	$cr = $prm['cache'];
+	if ( $cr != '0') $cacher = (empty($cr) ? 1 : $cr);
+	else if ($cr == '0') $cacher = 0;
+	$tr = 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat) . '_' . (empty($numc) ? 1 : $numc);
 
 	// Check for transient. If none, then execute WP_Query
-	if ( false === ( $gg = get_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat) . (empty($numc) ? 1 : $numc) ) ) ) {
+	if ( $cacher == 0 || false === ( $gt = get_transient( $tr ) ) ) {
 
 		$argss = array(
 			'no_found_rows' => true,
@@ -121,7 +125,7 @@ function init_api1( $data ) {
 			$argss['tax_query'] = array(
 				array(
 					'taxonomy' => 'category',
-					'field' => 'term_id',
+					'field' => 'slug',
 					'terms' => $b_cat,
 				),
 			);
@@ -161,8 +165,17 @@ function init_api1( $data ) {
 		if ( count( $gg ) === 1 ) {
 			$gg = $gg[0];
 		}
-		// Put the results in a transient. Expire after 12 hours.
-		set_transient( 'afb_cached_' . (empty($b_cat) ? 'all' : $b_cat), $gg, 1 * HOUR_IN_SECONDS );
+		// Put the results in a transient. Expire after 1 hour.
+		if($cacher == 0){
+			if($gt !== false){
+				delete_transient($tr);
+			}
+		}
+		else {
+			set_transient(  $tr, $gg, $cacher * HOUR_IN_SECONDS );
+		}
+	} else {
+		$gg = $gt;
 	}
 	return $gg;
 }
