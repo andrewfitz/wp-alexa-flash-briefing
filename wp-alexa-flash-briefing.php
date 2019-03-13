@@ -5,8 +5,8 @@
 * Plugin Name: WP Alexa Flash Briefing
 * Plugin URI: https://github.com/andrewfitz/wp-alexa-flash-briefing
 * Description: Creates briefing post types and JSON feed endpoint for Alexa flash briefing skill
-* Version: 1.6
-* Tested up to: 5.1
+* Version: 1.6.0
+* Tested up to: 5.1.1
 * Requires at least: 4.7
 * Author: Andrew Fitzgerald
 * Author URI: https://github.com/andrewfitz
