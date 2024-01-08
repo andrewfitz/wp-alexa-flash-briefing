@@ -1,5 +1,7 @@
 # Alexa Flash Briefing Plugin for Wordpress
 
+**This is no longer maintained as of Jan 2024.**
+
 This is a Wordpress plugin that creates a new post type of "briefing" that lets you create Alexa Flash Briefing compatible posts just like you would anything else in Wordpress. It uses these posts to create a feed for Alexa skills through the API.
 
 Create your briefings like regular posts. Here's how it works to determine a text to speech or audio file:
